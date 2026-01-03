@@ -1,0 +1,62 @@
+CACHE BUSTING GUIDE - DUO PRIME CARE PHARMACY WEBSITE
+=====================================================
+
+CURRENT VERSION: 2.0
+LAST UPDATED: 2025-01-28
+
+PROBLEM SOLVED:
+When you update your website, returning visitors see old cached versions instead of your new changes.
+
+SOLUTION IMPLEMENTED:
+✅ Added version parameters to CSS and JS files
+✅ Added cache control meta tags
+✅ Added version tracking in JavaScript
+✅ Added cache busting to background images
+
+HOW TO UPDATE FOR FUTURE CHANGES:
+==================================
+
+1. WHEN MAKING ANY WEBSITE CHANGES:
+   - Increment the version number in these files:
+   
+   index.html (line ~78):
+   <link rel="stylesheet" href="styles.css?v=2.0">
+   
+   index.html (line ~475):
+   <script src="script.js?v=2.0"></script>
+   
+   styles.css (multiple locations):
+   background-image: url('./photos/mainfront.png?v=2.0');
+   
+   script.js (line ~63):
+   const criticalImages = ['photos/mainfront.png?v=2.0'];
+
+2. UPDATE VERSION COMMENTS:
+   - Update the version comment in index.html (line ~21)
+   - Update the build date
+   
+3. VERSION NUMBERING:
+   - For minor changes: 2.0 → 2.1
+   - For major changes: 2.0 → 3.0
+   - For hotfixes: 2.0 → 2.0.1
+
+EXAMPLE UPDATE PROCESS:
+======================
+1. Make your changes to CSS, JS, or images
+2. Change v=2.0 to v=2.1 in all locations listed above
+3. Update the version comment
+4. Upload all files to your server
+5. Users will automatically see the new version!
+
+TESTING:
+========
+- Open browser dev tools (F12)
+- Check Network tab to see files loading with new version numbers
+- Clear browser cache and reload to test
+- Check that console.log(window.SITE_VERSION) shows correct version
+
+TROUBLESHOOTING:
+===============
+- If changes still don't appear, increment version number again
+- Make sure all file references include the version parameter
+- Check that your web server isn't overriding cache headers

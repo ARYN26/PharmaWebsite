@@ -1,0 +1,166 @@
+/* iOS-specific fixes and mobile enhancements */
+
+/* Fix iOS fixed background attachment issue */
+@supports (-webkit-touch-callout: none) {
+    .hero-slide {
+        background-attachment: scroll !important;
+    }
+}
+
+/* iOS Safari input zoom prevention */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea,
+    select {
+        font-size: 16px !important;
+    }
+}
+
+/* iOS bounce scroll fix */
+body {
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+}
+
+/* Prevent iOS rubber band scrolling - Updated for better compatibility */
+html {
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    min-height: 100%;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Fix iOS viewport height */
+@supports (-webkit-touch-callout: none) {
+    .hero {
+        min-height: -webkit-fill-available;
+    }
+}
+
+/* Improved touch targets for all devices */
+@media (hover: none) and (pointer: coarse) {
+    /* Touch devices */
+    button,
+    a,
+    input[type="submit"],
+    input[type="button"],
+    .btn-primary,
+    .nav-links a,
+    .social-links a,
+    .chat-option,
+    .hero-nav-btn,
+    .testimonial-nav-btn,
+    .faq-question {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Fix iOS tap highlight */
+* {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* iOS safe area insets */
+@supports (padding: max(0px)) {
+    header,
+    footer,
+    .chat-widget {
+        padding-left: max(15px, env(safe-area-inset-left));
+        padding-right: max(15px, env(safe-area-inset-right));
+    }
+    
+    .hero-content {
+        padding-bottom: max(40px, env(safe-area-inset-bottom));
+    }
+}
+
+/* Vendor prefixes for animations and transitions */
+@-webkit-keyframes fadeInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translateY(30px);
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+@-moz-keyframes fadeInUp {
+    from {
+        opacity: 0;
+        -moz-transform: translateY(30px);
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        -moz-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+/* Smooth scrolling for iOS */
+@supports (-webkit-overflow-scrolling: touch) {
+    * {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Fix mobile menu overflow on iOS */
+@media (max-width: 768px) {
+    .nav-links.active {
+        -webkit-overflow-scrolling: touch;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+/* Performance optimizations */
+.hero-slide,
+.testimonial,
+.card {
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* Fix blurry text on some devices */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Ensure smooth animations */
+* {
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+/* Fix Android Chrome address bar hiding */
+@media screen and (max-width: 768px) {
+    html {
+        height: 100%;
+    }
+    
+    body {
+        min-height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+}

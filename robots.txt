@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /DATAANALYSIS/
+
+# Sitemap location
+Sitemap: https://duoprimecarepharmacy.com/sitemap.xml
+
+# Crawl delay (optional - helps with server load)
+Crawl-delay: 1
