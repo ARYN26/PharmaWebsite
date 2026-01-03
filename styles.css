@@ -1988,7 +1988,7 @@ footer {
 .vision-image {
     position: relative;
     width: auto;
-    max-width: 380px;
+    max-width: 456px;
     flex-shrink: 0;
     order: 2;
     z-index: 1;
@@ -1999,8 +1999,8 @@ footer {
 }
 
 .vision-headshot {
-    max-width: 350px;
-    max-height: 450px;
+    max-width: 420px;
+    max-height: 540px;
     width: auto;
     object-fit: contain;
     z-index: 1;
@@ -2071,7 +2071,7 @@ footer {
     .vision-image {
         position: relative;
         width: 100%;
-        max-width: 200px;
+        max-width: 240px;
         height: auto;
         opacity: 1;
         margin-bottom: 20px;
@@ -2079,8 +2079,8 @@ footer {
     }
 
     .vision-headshot {
-        max-height: 200px;
-        max-width: 180px;
+        max-height: 240px;
+        max-width: 216px;
         width: auto;
         object-fit: contain;
     }
