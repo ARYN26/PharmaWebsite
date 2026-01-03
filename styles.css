@@ -1976,33 +1976,36 @@ footer {
 /* Add these styles for the Vision section with image */
 .vision-container {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
-    max-width: 1600px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
     position: relative;
-    min-height: 600px;
+    gap: 40px;
 }
 
 .vision-image {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 40%;
+    position: relative;
+    width: auto;
+    max-width: 380px;
+    flex-shrink: 0;
+    order: 2;
     z-index: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
 .vision-headshot {
-    max-height: 100%;
+    max-width: 350px;
+    max-height: 450px;
     width: auto;
     object-fit: contain;
     z-index: 1;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 /* CEO Title Styling - Enhanced for top positioning */
@@ -2047,7 +2050,7 @@ footer {
     flex-wrap: wrap;
     gap: 30px;
     justify-content: flex-start;
-    max-width: 60%;
+    max-width: none;
     position: relative;
     z-index: 2;
 }
@@ -2062,42 +2065,45 @@ footer {
         flex-direction: column;
         min-height: auto;
         padding: 10px;
+        gap: 20px;
     }
-    
+
     .vision-image {
         position: relative;
         width: 100%;
-        height: 300px;
+        max-width: 200px;
+        height: auto;
         opacity: 1;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         order: 1;
     }
-    
+
     .vision-headshot {
-        max-height: 250px;
+        max-height: 200px;
+        max-width: 180px;
         width: auto;
         object-fit: contain;
     }
-    
+
     .ceo-title {
         margin-bottom: 15px;
         margin-top: 0;
         padding: 12px 15px;
         border-radius: 8px;
     }
-    
+
     .ceo-title h3 {
         font-size: 1.1rem;
         letter-spacing: 0.5px;
     }
-    
+
     .feature-cards {
         max-width: 100%;
         position: relative;
         z-index: 1;
         order: 2;
     }
-    
+
     .feature-cards .card {
         background-color: white;
         opacity: 1;
@@ -2536,13 +2542,19 @@ footer {
 
 /* Chat Widget Styles */
 .chat-widget {
-    position: fixed;
+    position: fixed !important;
     bottom: 30px;
     right: 30px;
-    z-index: 998;
+    z-index: 99999;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    transform: none !important;
+    transform-style: flat !important;
+    will-change: auto;
+    contain: none;
+    filter: none;
+    perspective: none;
 }
 
 .chat-options {
@@ -2654,7 +2666,8 @@ footer {
 
 /* Social options inherit the same sizing for consistency */
 .chat-option.social {
-    /* Remove specific sizing overrides to use parent styles */
+    /* Uses parent styles - no overrides needed */
+    display: flex;
 }
 
 .chat-toggle {

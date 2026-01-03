@@ -71,12 +71,11 @@ body {
 /* iOS safe area insets */
 @supports (padding: max(0px)) {
     header,
-    footer,
-    .chat-widget {
+    footer {
         padding-left: max(15px, env(safe-area-inset-left));
         padding-right: max(15px, env(safe-area-inset-right));
     }
-    
+
     .hero-content {
         padding-bottom: max(40px, env(safe-area-inset-bottom));
     }
@@ -146,11 +145,7 @@ body {
     text-rendering: optimizeLegibility;
 }
 
-/* Ensure smooth animations */
-* {
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-}
+/* Removed transform-style: preserve-3d from universal selector as it breaks position: fixed */
 
 /* Fix Android Chrome address bar hiding */
 @media screen and (max-width: 768px) {
