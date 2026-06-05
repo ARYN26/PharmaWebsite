@@ -100,38 +100,56 @@ class RateLimiter:
 # --------------------------------------------------------------------------
 
 class BudgetTracker:
-    """Cumulative estimated USD spend per calendar day (UTC).
+    """Cumulative estimated USD spend per calendar day AND calendar month (UTC).
 
     llm.LLMClient calls .add() after every API response; main.py checks
-    .exceeded() BEFORE making any LLM call.
+    .exceeded() BEFORE making any LLM call. The daily cap is burst protection;
+    the monthly cap matches the owner's overall budget (~$12/mo).
     TODO(production): in-memory — resets on restart; move to Redis/DynamoDB.
+    NOTE: because of that reset, the unbypassable backstop is the limit set on
+    the OpenAI platform itself (disable auto-recharge / set a monthly limit).
     """
 
-    def __init__(self, daily_budget_usd: float | None = None):
+    def __init__(self, daily_budget_usd: float | None = None, monthly_budget_usd: float | None = None):
         self.daily_budget_usd = (
             daily_budget_usd if daily_budget_usd is not None else float(os.getenv("DAILY_BUDGET_USD", 2.00))
         )
-        self._day: date = datetime.now(timezone.utc).date()
+        self.monthly_budget_usd = (
+            monthly_budget_usd if monthly_budget_usd is not None else float(os.getenv("MONTHLY_BUDGET_USD", 12.00))
+        )
+        today = datetime.now(timezone.utc).date()
+        self._day: date = today
+        self._month: tuple[int, int] = (today.year, today.month)
         self._spent_usd: float = 0.0
+        self._month_spent_usd: float = 0.0
 
     def _roll(self) -> None:
         today = datetime.now(timezone.utc).date()
         if today != self._day:
             self._day = today
             self._spent_usd = 0.0
+        if (today.year, today.month) != self._month:
+            self._month = (today.year, today.month)
+            self._month_spent_usd = 0.0
 
     def add(self, cost_usd: float) -> None:
         self._roll()
         self._spent_usd += cost_usd
+        self._month_spent_usd += cost_usd
 
     def exceeded(self) -> bool:
         self._roll()
-        return self._spent_usd >= self.daily_budget_usd
+        return self._spent_usd >= self.daily_budget_usd or self._month_spent_usd >= self.monthly_budget_usd
 
     @property
     def spent_usd(self) -> float:
         self._roll()
         return self._spent_usd
+
+    @property
+    def month_spent_usd(self) -> float:
+        self._roll()
+        return self._month_spent_usd
 
 
 # Friendly kill-switch reply, returned WITHOUT any LLM call.

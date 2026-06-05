@@ -65,10 +65,12 @@ def get_llm():
 
 
 def _client_ip(request: Request) -> str:
-    # Behind nginx/Caddy/ALB the real client is in X-Forwarded-For (first hop).
+    # Behind Caddy the real client IP is the LAST X-Forwarded-For entry — the
+    # proxy APPENDS it. Earlier entries are client-supplied and spoofable, so
+    # trusting the first one would let attackers rotate fake IPs past the limiter.
     forwarded = request.headers.get("x-forwarded-for")
     if forwarded:
-        return forwarded.split(",")[0].strip()
+        return forwarded.split(",")[-1].strip()
     return request.client.host if request.client else "unknown"
 
 
@@ -117,7 +119,12 @@ def chat_endpoint(body: ChatRequest, request: Request):
 
     # 4. Daily budget kill-switch — checked BEFORE any LLM call.
     if budget.exceeded():
-        log_event("budget_exceeded", spent_usd=round(budget.spent_usd, 4), ip=ip)
+        log_event(
+            "budget_exceeded",
+            day_spend_usd=round(budget.spent_usd, 4),
+            month_spend_usd=round(budget.month_spent_usd, 4),
+            ip=ip,
+        )
         return ChatResponse(
             reply=BUDGET_EXCEEDED_REPLY[language],
             intent=Intent(category="out_of_scope", confidence=1.0, language=language),

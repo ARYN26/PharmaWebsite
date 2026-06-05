@@ -8,6 +8,7 @@ import re
 
 from .llm import LLMUsage
 from .models import Intent
+from .security import log_event
 
 # ---------------------------------------------------------------------------
 # Deterministic clinical gate (English + common Arabic equivalents).
@@ -114,5 +115,5 @@ def classify(message: str, llm) -> tuple[Intent, LLMUsage]:
         except Exception as err:  # noqa: BLE001 — any parse/API failure falls through
             last_err = err
     # Safe fallback: never an unvalidated blob — route the user instead.
-    del last_err
+    log_event("llm_error", stage="intent_classify", error=f"{type(last_err).__name__}: {last_err}")
     return Intent(category="out_of_scope", confidence=0.0, language=language), LLMUsage(0, 0.0)

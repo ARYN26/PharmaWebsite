@@ -138,8 +138,49 @@ The embed tag uses `data-api="https://bot.duoprimecarepharmacy.com"`.
 | `OPENAI_API_KEY` | real key — server-side only, never in the widget |
 | `ALLOWED_ORIGIN` | `https://duoprimecarepharmacy.com` |
 | `DEV` | `false` (disables localhost CORS) |
-| `DAILY_BUDGET_USD` | `2.00` (raise once traffic is understood) |
+| `DAILY_BUDGET_USD` | `2.00` (burst protection) |
+| `MONTHLY_BUDGET_USD` | `12.00` (overall monthly cap) |
 | `RATE_LIMIT_PER_MINUTE` / `RATE_LIMIT_PER_DAY` | `20` / `200` |
+
+## Cost controls & key hygiene
+
+Three layers keep spend bounded (defense in depth — the app counters are
+in-memory and reset on restart, so layer 1 is the real guarantee):
+
+1. **OpenAI platform (unbypassable):** at platform.openai.com →
+   - **Billing → disable auto-recharge.** With auto-recharge ON, a bug or
+     attack can keep buying credit forever. OFF means your prepaid balance is
+     a hard ceiling.
+   - **Limits → set a monthly budget** (~$12) if your account exposes it.
+2. **App monthly cap** (`MONTHLY_BUDGET_USD`, default $12): LLM calls stop for
+   the rest of the month; users get a friendly "WhatsApp us" reply.
+3. **App daily cap** (`DAILY_BUDGET_USD`, default $2): same, resets next day —
+   limits the damage of any single bad day to $2.
+
+Typical cost: ~$0.002–0.01 per answered message; clinical questions cost $0
+(refused before any LLM call).
+
+**Key hygiene on the server:**
+
+- Pass the key via `--env-file` rather than `-e` on the command line, so it
+  doesn't land in shell history:
+  ```bash
+  # /home/ec2-user/george.env  (chmod 600)
+  OPENAI_API_KEY=sk-...
+  ALLOWED_ORIGIN=https://duoprimecarepharmacy.com
+  DEV=false
+  DAILY_BUDGET_USD=2.00
+  MONTHLY_BUDGET_USD=12.00
+  ```
+  ```bash
+  sudo docker run -d --name george --restart unless-stopped \
+    -p 127.0.0.1:8000:8000 --env-file /home/ec2-user/george.env george-bot
+  ```
+- If the key was ever typed in a `-e` flag, clear it from history:
+  `history -c && rm -f ~/.bash_history`.
+- Anyone with shell access can still read it (`docker inspect`) — that's
+  inherent; protect the instance (keep port 22 patched, don't share the AWS
+  account), and rotate the key at platform.openai.com if you suspect exposure.
 
 ## Updating pharmacy facts
 

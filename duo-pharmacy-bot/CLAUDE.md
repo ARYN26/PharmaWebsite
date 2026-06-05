@@ -61,10 +61,15 @@ Python, so:
 - CORS locked to `https://duoprimecarepharmacy.com`; localhost only when `DEV=true`.
 - Rate limiting per-IP AND per-session (widget gets a session token from
   `GET /session`); env-configurable, defaults 20/min and 200/day each.
-- Daily USD budget kill-switch (`DAILY_BUDGET_USD`, default 2.00): when the
-  day's estimated spend exceeds it, LLM calls stop and a friendly bilingual
-  "assistant is taking a break — WhatsApp us" reply is returned.
+- Budget kill-switch, daily AND monthly (`DAILY_BUDGET_USD` default 2.00,
+  `MONTHLY_BUDGET_USD` default 12.00 — owner's budget is $10-15/mo): when
+  either cap is hit, LLM calls stop and a friendly bilingual "assistant is
+  taking a break — WhatsApp us" reply is returned.
   **In-memory — resets on restart. TODO: Redis/persistent for production.**
+  The unbypassable backstop is platform-side: auto-recharge disabled on the
+  OpenAI account.
+- Client IP behind Caddy = LAST X-Forwarded-For entry (the proxy appends it);
+  earlier entries are spoofable. Never key rate limits on the first entry.
 - Input validation: max length (env, default 1000), control chars stripped,
   obvious prompt-injection payloads neutralized (routed, not executed).
 - Structured JSON logs to stdout (intent, language, tokens, cost, latency,

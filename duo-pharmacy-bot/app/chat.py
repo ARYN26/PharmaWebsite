@@ -2,6 +2,7 @@
 
 from .kb import build_answer_system_prompt, get_contact
 from .llm import LLMUsage
+from .security import log_event
 
 
 def refusal_reply(language: str) -> str:
@@ -46,5 +47,6 @@ def answer(message: str, language: str, llm) -> tuple[str, LLMUsage]:
         if not reply.strip():
             return safe_routing_reply(language), usage
         return reply, usage
-    except Exception:  # noqa: BLE001 — API failure must never 500 the widget
+    except Exception as err:  # noqa: BLE001 — API failure must never 500 the widget
+        log_event("llm_error", stage="answer", error=f"{type(err).__name__}: {err}")
         return safe_routing_reply(language), LLMUsage(0, 0.0)
