@@ -1,0 +1,39 @@
+# Knowledge base for George bot.
+# THE BOT ANSWERS ONLY FROM THIS FILE.
+# Any value that starts with "TODO" is treated as UNKNOWN: the bot must say it
+# doesn't have that detail and route the user to WhatsApp/phone — never guess.
+# The owner can edit values here without touching code; restart the server to apply.
+
+pharmacy:
+  legal_name: "Duo Prime Care Pharmacy LLC SPC"
+  display_name: "Duo Prime Care Pharmacy"
+  location: "M24, Musaffah Industrial Area, Abu Dhabi, UAE"
+  hours: "Open Monday to Sunday, 8:00 AM to 10:00 PM"
+  phone: "02-667-4779"
+  whatsapp: "+971502981072"
+  email: "duoprimecarepharmacy@gmail.com"
+  maps_url: "https://maps.google.com/?q=Duo+Prime+Care+Pharmacy+Musaffah"
+  ceo: "Dr. Anil Srivastava (Internal Medicine & Diabetes Specialist)"
+  sister_site: "https://duopcmedicalcenter.com"
+
+medication_categories:   # categories they stock — NOT specific in-stock items
+  - "Diabetes medications (oral anti-diabetics)"
+  - "Insulin (rapid-acting, long-acting, intermediate)"
+  - "Antihypertensives (ACE inhibitors, ARBs, calcium channel blockers, beta-blockers)"
+  - "Proton pump inhibitors"
+  - "Cholesterol medications (statins)"
+  - "Thyroid replacement therapy"
+  - "Anti-allergics"
+  - "Anti-fungal treatments"
+  - "Cough syrups"
+
+services:
+  consultation: "DOH-certified pharmacist consultation available"
+  delivery: "TODO: confirm delivery area, fee, minimum order"   # site implies delivery, unconfirmed
+  diabetes_care: "Specialty focus on diabetes management"
+
+payment:
+  methods: "TODO: confirm accepted methods (cash, card)"
+  insurance: "TODO: list specific accepted insurance plans"     # owner will provide later
+
+specific_inventory: "TODO: owner will provide current in-stock drug list later"

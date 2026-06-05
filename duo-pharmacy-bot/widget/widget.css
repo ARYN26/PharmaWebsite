@@ -1,0 +1,180 @@
+/* George — Duo Prime Care Pharmacy chat widget (v1)
+   Bottom-LEFT on purpose: the site's existing WhatsApp/social widget owns
+   bottom-right (z-index 99999). We sit just below it in stacking order. */
+
+.george-widget {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  z-index: 99990;
+  font-family: "Segoe UI", Tahoma, Arial, "Noto Naskh Arabic", sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+/* Floating button */
+.george-fab {
+  width: 58px;
+  height: 58px;
+  border: none;
+  border-radius: 50%;
+  background: #0e7c66;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.george-fab:hover { transform: scale(1.06); background: #0a6353; }
+
+/* Panel */
+.george-panel {
+  display: none;
+  position: absolute;
+  bottom: 72px;
+  left: 0;
+  width: 340px;
+  max-width: calc(100vw - 40px);
+  height: 460px;
+  max-height: calc(100vh - 130px);
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+  flex-direction: column;
+}
+.george-open .george-panel { display: flex; }
+
+/* Header */
+.george-header {
+  background: #0e7c66;
+  color: #fff;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+}
+.george-header-title { display: flex; align-items: center; gap: 8px; }
+.george-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: #6ef0a8;
+  box-shadow: 0 0 0 3px rgba(110, 240, 168, 0.25);
+}
+.george-close {
+  background: none; border: none; color: #fff;
+  font-size: 22px; line-height: 1; cursor: pointer; padding: 0 4px;
+}
+
+/* Messages */
+.george-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 12px;
+  background: #f4f7f6;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.george-msg {
+  max-width: 85%;
+  padding: 9px 12px;
+  border-radius: 12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.george-msg-bot {
+  background: #fff;
+  color: #222;
+  align-self: flex-start;
+  border: 1px solid #e3e9e7;
+  border-bottom-left-radius: 4px;
+}
+.george-msg-user {
+  background: #0e7c66;
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+/* RTL (Arabic) messages */
+.george-msg.george-rtl { text-align: right; }
+.george-msg-bot.george-rtl { align-self: flex-end; border-bottom-left-radius: 12px; border-bottom-right-radius: 4px; }
+
+/* Handoff button */
+.george-handoff { background: transparent; border: none; padding: 2px 0; }
+.george-wa-btn {
+  display: inline-block;
+  background: #25d366;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 22px;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.4);
+}
+.george-wa-btn:hover { background: #1ebe5b; }
+
+/* Typing indicator */
+.george-typing { display: flex; gap: 4px; padding: 12px 14px; }
+.george-typing span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #b8c4c0;
+  animation: george-blink 1.2s infinite both;
+}
+.george-typing span:nth-child(2) { animation-delay: 0.2s; }
+.george-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes george-blink {
+  0%, 80%, 100% { opacity: 0.25; }
+  40% { opacity: 1; }
+}
+
+/* Disclaimer */
+.george-disclaimer {
+  font-size: 11px;
+  color: #7a8884;
+  background: #f4f7f6;
+  padding: 4px 12px 6px;
+  text-align: center;
+}
+
+/* Input */
+.george-form {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  background: #fff;
+  border-top: 1px solid #e3e9e7;
+}
+.george-input {
+  flex: 1;
+  border: 1px solid #cfd9d6;
+  border-radius: 20px;
+  padding: 9px 14px;
+  font-size: 15px;
+  outline: none;
+  font-family: inherit;
+}
+.george-input:focus { border-color: #0e7c66; }
+.george-send {
+  border: none;
+  background: #0e7c66;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 20px;
+  padding: 0 16px;
+  cursor: pointer;
+}
+.george-send:disabled { opacity: 0.5; cursor: default; }
+
+/* Mobile */
+@media (max-width: 480px) {
+  .george-widget { bottom: 20px; left: 16px; }
+  .george-panel {
+    width: calc(100vw - 32px);
+    height: 70vh;
+    bottom: 70px;
+  }
+  .george-fab { width: 52px; height: 52px; }
+}
