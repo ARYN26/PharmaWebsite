@@ -270,10 +270,16 @@
   font-size: 14.5px;
   outline: none;
   font-family: inherit;
-  color: var(--g-ink);
+  /* Force a white field with dark text. The host site has a global
+     `input { background:#34495e; color:#ecf0f1 }` dark-mode rule (styles.css)
+     that would otherwise make typed text near-invisible inside our panel.
+     !important keeps George readable regardless of the OS colour scheme. */
+  background-color: #ffffff !important;
+  color: var(--g-ink) !important;
+  -webkit-text-fill-color: var(--g-ink); /* Safari/iOS honour this over color */
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.george-input::placeholder { color: #a9b7c3; }
+.george-input::placeholder { color: #a9b7c3 !important; -webkit-text-fill-color: #a9b7c3; }
 .george-input:focus {
   border-color: var(--g-accent);
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.14);
