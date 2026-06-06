@@ -1,0 +1,23 @@
+[     199ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5500/photos/favicon.webp?v=3.2:0
+[     246ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5500/photos/main3.webp?v=3.2:0
+[     247ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5500/photos/main2.webp?v=3.2:0
+[     247ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5500/photos/mainfront.webp?v=3.2:0
+[     382ms] [LOG] ServiceWorker registration successful @ http://localhost:5500/script.js?v=3.0:26
+[     382ms] [WARNING] Manifest: found icon with no valid purpose; ignoring it. @ http://localhost:5500/manifest.json:0
+[     382ms] [WARNING] Manifest: found icon with no valid purpose; ignoring it. @ http://localhost:5500/manifest.json:0
+[    1294ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://bot.duoprimecarepharmacy.com/session?_=1780715615656:0
+[   51214ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5500/photos/favicon.webp?v=3.2:0
+[   51218ms] [WARNING] Manifest: found icon with no valid purpose; ignoring it. @ http://localhost:5500/manifest.json:0
+[   51218ms] [WARNING] Manifest: found icon with no valid purpose; ignoring it. @ http://localhost:5500/manifest.json:0
+[   51272ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5500/photos/main3.webp?v=3.2:0
+[   51272ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5500/photos/main2.webp?v=3.2:0
+[   51273ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5500/photos/mainfront.webp?v=3.2:0
+[   51297ms] [LOG] ServiceWorker registration successful @ http://localhost:5500/script.js?v=3.0:26
+[   51435ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5500/photos/favicon.webp?v=3.2:0
+[   51464ms] [WARNING] Manifest: found icon with no valid purpose; ignoring it. @ http://localhost:5500/manifest.json:0
+[   51464ms] [WARNING] Manifest: found icon with no valid purpose; ignoring it. @ http://localhost:5500/manifest.json:0
+[   51464ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5500/photos/main3.webp?v=3.2:0
+[   51473ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5500/photos/main2.webp?v=3.2:0
+[   51474ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5500/photos/mainfront.webp?v=3.2:0
+[   51497ms] [LOG] ServiceWorker registration successful @ http://localhost:5500/script.js?v=3.0:26
+[   52583ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://bot.duoprimecarepharmacy.com/session?_=1780715667064:0
