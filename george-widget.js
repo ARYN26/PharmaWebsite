@@ -55,22 +55,36 @@
   var root = el("div", "george-widget");
   root.id = "george-widget";
 
-  var button = el("button", "george-fab");
+  // Docked launcher bar (avatar + label + chevron). Whole bar toggles the panel.
+  var button = el("button", "george-bar");
   button.setAttribute("aria-label", "Chat with George, the pharmacy assistant");
-  button.innerHTML =
-    '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>';
+  var barAvatar = el("span", "george-bar-avatar", "G");
+  var barLabel = el("span", "george-bar-label", "Chat with George");
+  var barChevron = el("span", "george-bar-chevron");
+  barChevron.innerHTML =
+    '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>';
+  button.appendChild(barAvatar);
+  button.appendChild(barLabel);
+  button.appendChild(barChevron);
 
   var panel = el("div", "george-panel");
   panel.setAttribute("role", "dialog");
   panel.setAttribute("aria-label", "Pharmacy chat assistant");
 
   var header = el("div", "george-header");
-  var headTitle = el("div", "george-header-title");
-  headTitle.appendChild(el("span", "george-dot"));
-  headTitle.appendChild(el("span", null, "George · Duo Prime Care"));
-  var closeBtn = el("button", "george-close", "×");
-  closeBtn.setAttribute("aria-label", "Close chat");
-  header.appendChild(headTitle);
+  var headAvatar = el("span", "george-header-avatar", "G");
+  var headText = el("div", "george-header-text");
+  headText.appendChild(el("span", "george-header-name", "George"));
+  var headStatus = el("span", "george-header-status");
+  headStatus.appendChild(el("span", "george-dot"));
+  headStatus.appendChild(el("span", null, "Duo Prime Care · Online"));
+  headText.appendChild(headStatus);
+  var closeBtn = el("button", "george-close", "");
+  closeBtn.setAttribute("aria-label", "Minimize chat");
+  closeBtn.innerHTML =
+    '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+  header.appendChild(headAvatar);
+  header.appendChild(headText);
   header.appendChild(closeBtn);
 
   var messages = el("div", "george-messages");
@@ -188,12 +202,13 @@
   var opened = false;
   function togglePanel(open) {
     root.classList.toggle("george-open", open);
+    button.setAttribute("aria-expanded", open ? "true" : "false");
     if (open && !opened) {
       opened = true;
       addMessage(I18N.greeting, "bot", false);
       ensureSession().catch(function () { /* retried on first send */ });
     }
-    if (open) input.focus();
+    if (open) setTimeout(function () { input.focus(); }, 50);
   }
 
   button.addEventListener("click", function () { togglePanel(!root.classList.contains("george-open")); });

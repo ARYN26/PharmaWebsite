@@ -1,180 +1,326 @@
-/* George — Duo Prime Care Pharmacy chat widget (v1)
-   Bottom-LEFT on purpose: the site's existing WhatsApp/social widget owns
-   bottom-right (z-index 99999). We sit just below it in stacking order. */
+/* George — Duo Prime Care Pharmacy chat widget (v1.2)
+   Docked avatar pill-bar launcher (bottom-LEFT) that slides a clean-clinical
+   panel up/down. On-brand with the site: blue #1a5276 -> #2e86c1, Segoe UI,
+   30px pills, soft shadows. The existing WhatsApp/social widget owns the
+   bottom-right; we coexist at a lower stacking order. */
 
 .george-widget {
+  --g-primary: #1a5276;
+  --g-secondary: #2e86c1;
+  --g-accent: #3498db;
+  --g-ink: #2c3e50;
+  --g-muted: #7a8a99;
+  --g-line: #e6edf2;
+  --g-bg: #f5f8fb;
+  --g-grad: linear-gradient(135deg, #1a5276 0%, #2e86c1 100%);
   position: fixed;
-  bottom: 30px;
-  left: 30px;
+  bottom: 26px;
+  left: 26px;
   z-index: 99990;
-  font-family: "Segoe UI", Tahoma, Arial, "Noto Naskh Arabic", sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, "Noto Naskh Arabic", sans-serif;
   font-size: 15px;
-  line-height: 1.45;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Floating button */
-.george-fab {
-  width: 58px;
-  height: 58px;
+/* ---- Launcher bar ------------------------------------------------------- */
+.george-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 8px;
   border: none;
-  border-radius: 50%;
-  background: #0e7c66;
+  border-radius: 40px;
+  background: var(--g-grad);
   color: #fff;
   cursor: pointer;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(26, 82, 118, 0.32);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.george-bar:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(26, 82, 118, 0.42); }
+.george-bar:active { transform: translateY(0) scale(0.99); }
+
+.george-bar-avatar {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-  transition: transform 0.15s ease, background 0.15s ease;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.5px;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.55);
 }
-.george-fab:hover { transform: scale(1.06); background: #0a6353; }
+.george-bar-label { white-space: nowrap; }
+.george-bar-chevron {
+  display: flex;
+  margin-left: 2px;
+  opacity: 0.9;
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* When open, the chevron flips down (collapse hint) */
+.george-open .george-bar-chevron { transform: rotate(180deg); }
 
-/* Panel */
+/* ---- Panel -------------------------------------------------------------- */
 .george-panel {
-  display: none;
   position: absolute;
-  bottom: 72px;
+  bottom: 64px;
   left: 0;
-  width: 340px;
-  max-width: calc(100vw - 40px);
-  height: 460px;
-  max-height: calc(100vh - 130px);
+  width: 360px;
+  max-width: calc(100vw - 36px);
+  height: 500px;
+  max-height: calc(100vh - 140px);
   background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  border-radius: 18px;
+  box-shadow: 0 18px 50px rgba(26, 50, 80, 0.28);
   overflow: hidden;
+  display: flex;
   flex-direction: column;
+  transform-origin: bottom left;
+  /* Collapsed state: slid down + faded, not interactable */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px) scale(0.98);
+  transition: opacity 0.28s ease, transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0.32s;
 }
-.george-open .george-panel { display: flex; }
+.george-open .george-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
 
-/* Header */
+/* ---- Header ------------------------------------------------------------- */
 .george-header {
-  background: #0e7c66;
+  background: var(--g-grad);
   color: #fff;
-  padding: 12px 14px;
+  padding: 14px 14px 14px 16px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  font-weight: 600;
+  gap: 11px;
 }
-.george-header-title { display: flex; align-items: center; gap: 8px; }
+.george-header-avatar {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.55);
+}
+.george-header-text { display: flex; flex-direction: column; line-height: 1.25; flex: 1; }
+.george-header-name { font-weight: 700; font-size: 16px; }
+.george-header-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  opacity: 0.92;
+}
 .george-dot {
-  width: 9px; height: 9px; border-radius: 50%;
-  background: #6ef0a8;
-  box-shadow: 0 0 0 3px rgba(110, 240, 168, 0.25);
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6);
+  animation: george-pulse 2s infinite;
+}
+@keyframes george-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.55); }
+  70% { box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
 }
 .george-close {
-  background: none; border: none; color: #fff;
-  font-size: 22px; line-height: 1; cursor: pointer; padding: 0 4px;
+  background: rgba(255, 255, 255, 0.14);
+  border: none;
+  color: #fff;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
+.george-close:hover { background: rgba(255, 255, 255, 0.28); }
 
-/* Messages */
+/* ---- Messages ----------------------------------------------------------- */
 .george-messages {
   flex: 1;
   overflow-y: auto;
-  padding: 14px 12px;
-  background: #f4f7f6;
+  padding: 16px 14px;
+  background: var(--g-bg);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
+.george-messages::-webkit-scrollbar { width: 7px; }
+.george-messages::-webkit-scrollbar-thumb { background: #cdd9e3; border-radius: 4px; }
+
 .george-msg {
-  max-width: 85%;
-  padding: 9px 12px;
-  border-radius: 12px;
+  max-width: 84%;
+  padding: 10px 14px;
+  border-radius: 16px;
   white-space: pre-wrap;
   word-wrap: break-word;
+  font-size: 14.5px;
+  animation: george-rise 0.25s ease both;
+}
+@keyframes george-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .george-msg-bot {
   background: #fff;
-  color: #222;
+  color: var(--g-ink);
   align-self: flex-start;
-  border: 1px solid #e3e9e7;
-  border-bottom-left-radius: 4px;
+  border: 1px solid var(--g-line);
+  border-bottom-left-radius: 5px;
+  box-shadow: 0 2px 8px rgba(26, 50, 80, 0.05);
 }
 .george-msg-user {
-  background: #0e7c66;
+  background: var(--g-grad);
   color: #fff;
   align-self: flex-end;
-  border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 3px 10px rgba(26, 82, 118, 0.25);
 }
 /* RTL (Arabic) messages */
 .george-msg.george-rtl { text-align: right; }
-.george-msg-bot.george-rtl { align-self: flex-end; border-bottom-left-radius: 12px; border-bottom-right-radius: 4px; }
+.george-msg-bot.george-rtl {
+  align-self: flex-end;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 5px;
+}
+.george-msg-user.george-rtl {
+  align-self: flex-start;
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 5px;
+}
 
-/* Handoff button */
-.george-handoff { background: transparent; border: none; padding: 2px 0; }
+/* ---- WhatsApp handoff button ------------------------------------------- */
+.george-handoff { background: transparent; border: none; box-shadow: none; padding: 2px 0; }
 .george-wa-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   background: #25d366;
   color: #fff;
   text-decoration: none;
   font-weight: 600;
-  padding: 9px 16px;
-  border-radius: 22px;
-  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.4);
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 24px;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.george-wa-btn:hover { background: #1ebe5b; }
+.george-wa-btn::before {
+  content: "";
+  width: 16px; height: 16px;
+  background: no-repeat center/contain
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.2-.7-2.7-1.1-4.4-3.8-4.5-4-.1-.2-1.1-1.4-1.1-2.7s.7-1.9 .9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2 1.3 2.3 1.5.2.1.4 0 .5-.1l.7-.8c.2-.2.3-.2.6-.1l1.8.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>');
+}
+.george-wa-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5); }
 
-/* Typing indicator */
-.george-typing { display: flex; gap: 4px; padding: 12px 14px; }
+/* ---- Typing indicator --------------------------------------------------- */
+.george-typing { display: flex; gap: 5px; padding: 13px 16px; box-shadow: 0 2px 8px rgba(26, 50, 80, 0.05); }
 .george-typing span {
   width: 7px; height: 7px; border-radius: 50%;
-  background: #b8c4c0;
-  animation: george-blink 1.2s infinite both;
+  background: var(--g-secondary);
+  opacity: 0.5;
+  animation: george-blink 1.3s infinite both;
 }
 .george-typing span:nth-child(2) { animation-delay: 0.2s; }
 .george-typing span:nth-child(3) { animation-delay: 0.4s; }
 @keyframes george-blink {
-  0%, 80%, 100% { opacity: 0.25; }
-  40% { opacity: 1; }
+  0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
 }
 
-/* Disclaimer */
+/* ---- Disclaimer --------------------------------------------------------- */
 .george-disclaimer {
-  font-size: 11px;
-  color: #7a8884;
-  background: #f4f7f6;
-  padding: 4px 12px 6px;
+  font-size: 10.5px;
+  color: var(--g-muted);
+  background: var(--g-bg);
+  padding: 4px 14px 8px;
   text-align: center;
+  border-top: 1px solid var(--g-line);
 }
 
-/* Input */
+/* ---- Input -------------------------------------------------------------- */
 .george-form {
   display: flex;
   gap: 8px;
-  padding: 10px;
+  padding: 11px 12px;
   background: #fff;
-  border-top: 1px solid #e3e9e7;
+  border-top: 1px solid var(--g-line);
 }
 .george-input {
   flex: 1;
-  border: 1px solid #cfd9d6;
-  border-radius: 20px;
-  padding: 9px 14px;
-  font-size: 15px;
+  border: 1.5px solid var(--g-line);
+  border-radius: 24px;
+  padding: 11px 16px;
+  font-size: 14.5px;
   outline: none;
   font-family: inherit;
+  color: var(--g-ink);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.george-input:focus { border-color: #0e7c66; }
+.george-input::placeholder { color: #a9b7c3; }
+.george-input:focus {
+  border-color: var(--g-accent);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.14);
+}
 .george-send {
   border: none;
-  background: #0e7c66;
+  background: var(--g-grad);
   color: #fff;
-  font-weight: 600;
-  border-radius: 20px;
-  padding: 0 16px;
+  width: 44px; height: 44px;
+  flex: 0 0 44px;
+  border-radius: 50%;
   cursor: pointer;
+  font-size: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  box-shadow: 0 3px 10px rgba(26, 82, 118, 0.3);
 }
-.george-send:disabled { opacity: 0.5; cursor: default; }
+.george-send::after {
+  content: "";
+  width: 19px; height: 19px;
+  background: no-repeat center/contain
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>');
+}
+.george-send:hover:not(:disabled) { transform: translateY(-1px) scale(1.05); }
+.george-send:disabled { opacity: 0.45; cursor: default; }
 
-/* Mobile */
+/* ---- Mobile ------------------------------------------------------------- */
 @media (max-width: 480px) {
-  .george-widget { bottom: 20px; left: 16px; }
+  .george-widget { bottom: 18px; left: 14px; }
+  .george-bar { padding: 7px 14px 7px 7px; font-size: 14px; }
+  .george-bar-avatar { width: 34px; height: 34px; flex-basis: 34px; font-size: 15px; }
   .george-panel {
-    width: calc(100vw - 32px);
-    height: 70vh;
-    bottom: 70px;
+    width: calc(100vw - 28px);
+    height: 72vh;
+    bottom: 60px;
   }
-  .george-fab { width: 52px; height: 52px; }
+}
+
+/* ---- Reduced motion ----------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .george-panel,
+  .george-bar,
+  .george-bar-chevron,
+  .george-msg,
+  .george-dot,
+  .george-typing span { transition: none !important; animation: none !important; }
+  .george-panel { transform: none; }
 }
